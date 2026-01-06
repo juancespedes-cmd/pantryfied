@@ -56,13 +56,27 @@ export default async function handler(req, res) {
         role: 'user',
         content: `I have these ingredients in my pantry: ${itemList}. 
 
-Please suggest 3 creative recipes I can make, prioritizing ingredients that expire soonest. For each recipe:
-- Give it a catchy name
-- List ingredients needed (highlighting what I already have)
-- Brief cooking steps
-- Estimated time
+Please suggest 3 creative recipes I can make, prioritizing ingredients that expire soonest.
 
-Keep it concise and practical!`
+For each recipe, format EXACTLY like this (no markdown symbols like *, #, or -):
+
+Recipe 1: [Catchy Recipe Name]
+
+Ingredients:
+[Amount] [ingredient name] (from pantry)
+[Amount] [ingredient name] (from pantry)
+[Amount] [ingredient name] (need to buy)
+
+Instructions:
+1. [First step]
+2. [Second step]
+3. [Third step]
+
+Time: [X minutes]
+
+---
+
+Do NOT use any markdown formatting symbols. Use plain text only. Write amounts like "2 cups", "1 lb", "3 cloves", etc.`
       }]
     };
 
