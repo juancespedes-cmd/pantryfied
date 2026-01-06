@@ -339,7 +339,7 @@ const parseRecipes = (text) => {
                         <div className="bg-white rounded-3xl shadow-sm p-6">
                             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Quick Actions</h3>
                             <div className="grid grid-cols-3 gap-3">
-                                <button onClick={() => setShowAddModal(true)} className="bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
+                                <button onClick={() => setShowAddModal(true)} className="relative z-10 bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
                                     <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center">
                                         <Plus className="text-white" size={24} />
                                     </div>
@@ -351,7 +351,7 @@ const parseRecipes = (text) => {
                                     </div>
                                     <span className="text-sm font-semibold text-gray-700">Scan</span>
                                 </button>
-                               <button onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchModal(true); }} className="bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
+                               <button onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchModal(true); }} className="relative z-10 bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
     <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center">
         <Search size={24} className="text-white" />
     </div>
@@ -410,7 +410,7 @@ const parseRecipes = (text) => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <button onClick={() => deleteItem(item.id)} className="w-10 h-10 bg-red-50 hover:bg-red-100 rounded-xl flex items-center justify-center transition-colors">
+                                            <button onClick={() => deleteItem(item.id)} className="relative z-10 w-10 h-10 bg-red-50 hover:bg-red-100 rounded-xl flex items-center justify-center transition-colors">
                                                 <Trash2 size={18} className="text-red-500" />
                                             </button>
                                         </div>
@@ -427,7 +427,7 @@ const parseRecipes = (text) => {
                                     <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-6"></div>
                                     <div className="flex justify-between items-center mb-6">
                                         <h2 className="text-xl font-bold text-gray-900">Add New Item</h2>
-                                        <button onClick={() => { setShowAddModal(false); setScannedCode(''); }} className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                        <button onClick={() => { setShowAddModal(false); setScannedCode(''); }} className="relative z-10 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                                             <X size={20} className="text-gray-600" />
                                         </button>
                                     </div>
@@ -511,7 +511,7 @@ const parseRecipes = (text) => {
             <div className="bg-gradient-to-r from-purple-400 to-pink-400 p-6">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-white">Search Recipes</h2>
-                    <button onClick={() => setShowSearchModal(false)} className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                    <button onClick={() => setShowSearchModal(false)} className="relative z-10 w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <X size={20} className="text-white" />
                     </button>
                 </div>
@@ -581,7 +581,7 @@ const parseRecipes = (text) => {
                                             <h2 className="text-2xl font-bold">Recipe Ideas</h2>
                                             <p className="text-sm opacity-90 mt-1">Personalized for your pantry</p>
                                         </div>
-                                        <button onClick={() => setShowRecipes(false)} className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors">
+                                        <button onClick={() => setShowRecipes(false)} className="relative z-10 w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors">
                                             <X size={20} className="text-white" />
                                         </button>
                                     </div>
