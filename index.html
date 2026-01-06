@@ -351,7 +351,7 @@ const parseRecipes = (text) => {
                                     </div>
                                     <span className="text-sm font-semibold text-gray-700">Scan</span>
                                 </button>
-                               <button onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchModal(true); }}>
+                               <button onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchModal(true); }} className="bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
     <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center">
         <Search size={24} className="text-white" />
     </div>
