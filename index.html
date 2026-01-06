@@ -336,9 +336,9 @@ const parseRecipes = (text) => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-3xl shadow-sm p-6 relative">
+                        <div className="bg-white rounded-3xl shadow-sm p-6">
                             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Quick Actions</h3>
-                            <div className="grid grid-cols-3 gap-3 relative z-10">
+                            <div className="grid grid-cols-3 gap-3">
                                 <button onClick={() => setShowAddModal(true)} className="bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
                                     <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center">
                                         <Plus className="text-white" size={24} />
@@ -351,7 +351,7 @@ const parseRecipes = (text) => {
                                     </div>
                                     <span className="text-sm font-semibold text-gray-700">Scan</span>
                                 </button>
-                              <button onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchModal(true); }} ...>
+                               <button onClick={() => alert('Search button clicked!')} className="bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 flex flex-col items-center gap-2 transition-all">
     <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center">
         <Search size={24} className="text-white" />
     </div>
