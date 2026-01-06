@@ -1,18 +1,15 @@
 // api/generate-recipes.js
 export default async function handler(req, res) {
-  // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-  // Handle preflight request
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -24,19 +21,40 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Item list is required' });
     }
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
-        messages: [{
-          role: 'user',
-          content: `I have these ingredients in my pantry: ${itemList}. 
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    
+    // Debug logging
+    console.log('=== DEBUG INFO ===');
+    console.log('API Key exists:', !!apiKey);
+    console.log('API Key starts with sk-ant:', apiKey?.startsWith('sk-ant'));
+    console.log('API Key length:', apiKey?.length);
+    console.log('First 10 chars:', apiKey?.substring(0, 10));
+    console.log('Last 5 chars:', apiKey?.substring(apiKey?.length - 5));
+    
+    if (!apiKey) {
+      console.error('ERROR: API key is undefined or null');
+      return res.status(500).json({ 
+        error: 'API key not configured',
+        message: 'ANTHROPIC_API_KEY environment variable is missing' 
+      });
+    }
+
+    if (!apiKey.startsWith('sk-ant')) {
+      console.error('ERROR: API key does not start with sk-ant');
+      return res.status(500).json({ 
+        error: 'Invalid API key format',
+        message: 'API key should start with sk-ant' 
+      });
+    }
+
+    console.log('Making request to Anthropic API...');
+
+    const anthropicRequest = {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1500,
+      messages: [{
+        role: 'user',
+        content: `I have these ingredients in my pantry: ${itemList}. 
 
 Please suggest 3 creative recipes I can make, prioritizing ingredients that expire soonest. For each recipe:
 - Give it a catchy name
@@ -45,27 +63,58 @@ Please suggest 3 creative recipes I can make, prioritizing ingredients that expi
 - Estimated time
 
 Keep it concise and practical!`
-        }]
-      })
+      }]
+    };
+
+    console.log('Request body:', JSON.stringify(anthropicRequest).substring(0, 100));
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey.trim(),
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(anthropicRequest)
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response headers:', JSON.stringify(Object.fromEntries(response.headers.entries())));
+
+    const responseText = await response.text();
+    console.log('Response body (first 300 chars):', responseText.substring(0, 300));
+
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Anthropic API error:', errorData);
+      console.error('Anthropic API returned error');
+      console.error('Full error response:', responseText);
+      
+      let errorMessage = 'Failed to generate recipes';
+      try {
+        const errorData = JSON.parse(responseText);
+        if (errorData.error?.message) {
+          errorMessage = errorData.error.message;
+        }
+      } catch (e) {
+        console.error('Could not parse error response as JSON');
+      }
+      
       return res.status(response.status).json({ 
-        error: 'Failed to generate recipes',
-        details: errorData 
+        error: errorMessage,
+        details: responseText.substring(0, 500)
       });
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
+    console.log('Success! Generated', data.content?.length, 'content blocks');
     return res.status(200).json(data);
 
   } catch (error) {
-    console.error('Server error:', error);
+    console.error('Unexpected server error:', error);
+    console.error('Error stack:', error.stack);
     return res.status(500).json({ 
       error: 'Internal server error',
-      message: error.message 
+      message: error.message,
+      stack: error.stack?.substring(0, 500)
     });
   }
 }
